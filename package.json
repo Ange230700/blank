@@ -10,6 +10,7 @@
     "prepare": "husky",
     "commit": "git-cz",
     "commitlint": "commitlint --edit",
+    "lint": "eslint --cache --fix",
     "clean": "rm -rf package-lock.json node_modules dist .expo"
   },
   "dependencies": {
