@@ -5,8 +5,8 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "blank/*": ["./src/*"]
+      "blank/*": ["./src/*", "./tests/*"]
     },
-    "types": ["nativewind/types"]
+    "types": ["nativewind/types", "jest"]
   }
 }

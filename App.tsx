@@ -1,12 +1,9 @@
 // App.tsx
 
 import 'react-native-gesture-handler'; // safe to include for navigation gestures
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  type NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   createBottomTabNavigator,
   type BottomTabNavigationOptions,
@@ -18,6 +15,8 @@ import type { NavigatorScreenParams } from '@react-navigation/native';
 import HomeScreen from 'blank/screens/HomeScreen';
 import FavoritesScreen from 'blank/screens/FavoritesScreen';
 import TabBarIcon from 'blank/components/TabBarIcon';
+import { useAuth } from 'blank/stores/authStore';
+import LoginScreen from 'blank/screens/LoginScreen';
 
 global.Buffer = Buffer;
 
@@ -47,11 +46,7 @@ function getTabOptions(
 
 function Tabs() {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) =>
-        getTabOptions(route.name)
-      }
-    >
+    <Tab.Navigator screenOptions={({ route }) => getTabOptions(route.name)}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
     </Tab.Navigator>
@@ -61,18 +56,38 @@ function Tabs() {
 /** Stack that hosts the tabs */
 export type RootStackParamList = {
   Root: NavigatorScreenParams<TabParamList>;
+  Login: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false } as NativeStackNavigationOptions}
-      >
+  const { user, hydrate, loading } = useAuth();
+
+  useEffect(() => {
+    hydrate();
+  }, []);
+
+  let content: React.ReactNode;
+  if (loading) {
+    content = null;
+  } else if (user) {
+    content = (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={Tabs} />
       </Stack.Navigator>
-    </NavigationContainer>
-  );
+    );
+  } else {
+    content = (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ title: 'Sign in' }}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  return <NavigationContainer>{content}</NavigationContainer>;
 }
