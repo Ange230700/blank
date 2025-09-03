@@ -2,6 +2,10 @@
 
 import { registerRootComponent } from 'expo';
 
+if (process.env.EXPO_PUBLIC_USE_FAKE === '1') {
+  import('./src/mocks/bootstrap').then((m) => m.startMocking());
+}
+
 import App from './App';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);

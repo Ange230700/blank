@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
-import { useAuth } from 'blank/stores/authStore';
+import { useAppDispatch, useAppSelector } from 'blank/stores/hooks';
+import { login } from 'blank/stores/slices/authSlice';
 
 export default function LoginScreen() {
-  const { login, loading, error } = useAuth();
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((s) => s.auth);
   const [username, setUsername] = useState('emilys');
   const [password, setPassword] = useState('emilyspass');
 
@@ -26,7 +28,7 @@ export default function LoginScreen() {
       />
       <Button
         title={loading ? '...' : 'Login'}
-        onPress={() => login(username, password)}
+        onPress={() => dispatch(login({ username, password }))}
       />
       {!!error && <Text className="text-red-500">{error}</Text>}
       <Text className="opacity-60 text-sm mt-2">Hint: emilys / emilyspass</Text>

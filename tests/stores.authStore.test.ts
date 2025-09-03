@@ -1,6 +1,6 @@
 // tests\stores.authStore.test.ts
 
-import { act } from 'react-test-renderer';
+import { act } from '@testing-library/react-native';
 import { useAuth } from 'blank/stores/authStore';
 
 // Mock the network services used by the store

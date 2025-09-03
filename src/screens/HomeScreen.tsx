@@ -1,21 +1,24 @@
 // src\screens\HomeScreen.tsx
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { View, Text, FlatList, Switch, Pressable } from 'react-native';
-import { useAuth } from 'blank/stores/authStore';
+import { useAppDispatch, useAppSelector } from 'blank/stores/hooks';
+import { hydrate } from 'blank/stores/slices/authSlice';
 import { listTodosByUser, toggleTodo } from 'blank/services/todos';
 import type { Todo } from 'blank/types/todo';
-import { useFavs } from 'blank/stores/favsStore';
+import { togglePin } from 'blank/stores/slices/favsSlice';
 
 export default function HomeScreen() {
-  const { user, hydrate } = useAuth();
-  const { togglePin, isPinned } = useFavs();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((s) => s.auth);
+  const pinnedIds = useAppSelector((s) => s.favs.pinnedIds); // ← select once
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
 
   useEffect(() => {
-    hydrate();
-  }, [hydrate]);
+    dispatch(hydrate());
+  }, [dispatch]);
+
   useEffect(() => {
     (async () => {
       if (!user) return;
@@ -30,14 +33,14 @@ export default function HomeScreen() {
     return todos;
   }, [todos, filter]);
 
-  async function onToggle(t: Todo) {
+  const onToggle = useCallback(async (t: Todo) => {
     setTodos((prev) =>
       prev.map((x) => (x.id === t.id ? { ...x, completed: !x.completed } : x)),
     );
     try {
       await toggleTodo(t.id, !t.completed);
     } catch {}
-  }
+  }, []);
 
   return (
     <View className="flex-1 p-4">
@@ -52,22 +55,27 @@ export default function HomeScreen() {
       <FlatList
         data={shown}
         keyExtractor={(i) => String(i.id)}
-        renderItem={({ item }) => (
-          <View className="flex-row items-center justify-between border-b py-3">
-            <Pressable
-              onLongPress={() => togglePin(item.id)}
-              className="flex-1 pr-4"
-            >
-              <Text className={item.completed ? 'line-through opacity-60' : ''}>
-                {item.todo} {isPinned(item.id) ? '📌' : ''}
-              </Text>
-            </Pressable>
-            <Switch
-              value={item.completed}
-              onValueChange={() => onToggle(item)}
-            />
-          </View>
-        )}
+        renderItem={({ item }) => {
+          const pinned = !!pinnedIds[item.id]; // ← no hook here
+          return (
+            <View className="flex-row items-center justify-between border-b py-3">
+              <Pressable
+                onLongPress={() => dispatch(togglePin(item.id))}
+                className="flex-1 pr-4"
+              >
+                <Text
+                  className={item.completed ? 'line-through opacity-60' : ''}
+                >
+                  {item.todo} {pinned ? '📌' : ''}
+                </Text>
+              </Pressable>
+              <Switch
+                value={item.completed}
+                onValueChange={() => onToggle(item)}
+              />
+            </View>
+          );
+        }}
       />
     </View>
   );

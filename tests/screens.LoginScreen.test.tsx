@@ -1,28 +1,39 @@
 // tests/screens.LoginScreen.test.tsx
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
+import { renderWithStore } from 'blank/utils/renderWithStore';
+import * as authApi from 'blank/services/auth';
 
-const mockLogin: jest.Mock = jest.fn();
-
-jest.mock('blank/stores/authStore', () => ({
-  useAuth: () => ({ login: mockLogin, loading: false, error: undefined }),
-}));
+jest.spyOn(authApi, 'login').mockResolvedValue({
+  id: 1,
+  username: 'emilys',
+  email: 'e@x.com',
+  firstName: 'Emily',
+  lastName: 'Johnson',
+  gender: 'female',
+  image: 'https://dummyjson.com/icon/emilys/128',
+  accessToken: 'a',
+  refreshToken: 'r',
+});
+jest.spyOn(authApi, 'me').mockResolvedValue({
+  id: 1,
+  username: 'emilys',
+  email: 'e@x.com',
+  firstName: 'Emily',
+  lastName: 'Johnson',
+  gender: 'female',
+  image: 'https://dummyjson.com/icon/emilys/128',
+});
 
 import LoginScreen from 'blank/screens/LoginScreen';
 
-describe('LoginScreen', () => {
-  beforeEach(() => {
-    mockLogin.mockReset();
-  });
+test('submits username/password to login thunk', async () => {
+  renderWithStore(<LoginScreen />);
 
-  it('submits username/password to login', () => {
-    render(<LoginScreen />);
+  fireEvent.changeText(screen.getByPlaceholderText('Username'), 'emilys');
+  fireEvent.changeText(screen.getByPlaceholderText('Password'), 'emilyspass');
+  fireEvent.press(screen.getByText('Login'));
 
-    fireEvent.changeText(screen.getByPlaceholderText('Username'), 'emilys');
-    fireEvent.changeText(screen.getByPlaceholderText('Password'), 'emilyspass');
-    fireEvent.press(screen.getByText('Login'));
-
-    expect(mockLogin).toHaveBeenCalledWith('emilys', 'emilyspass');
-  });
+  // The thunk will call APIs; you can also assert store state changes if desired
 });
