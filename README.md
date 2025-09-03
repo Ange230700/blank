@@ -2,7 +2,7 @@
 
 # 📱 Blank — TODO list manager mobile app
 
-A **modern Expo + React Native app** is TODO list manager that demonstrates clean architecture, type-safe APIs, state management (Redux Toolkit), secure authentication flows, navigation, Tailwind styling, and a robust developer experience with testing and CI/CD.
+A **modern Expo + React Native app** is TODO list manager that demonstrates clean architecture, type-safe APIs, state management (Redux Toolkit), navigation, Tailwind styling, and a robust developer experience with testing and CI/CD.
 
 ---
 
@@ -10,16 +10,13 @@ A **modern Expo + React Native app** is TODO list manager that demonstrates clea
 
 - **Expo 53 + React Native 0.79** with **React 19** support
 - **Navigation** via React Navigation (stack + bottom tabs)
-- **Authentication** with JWT-style access/refresh tokens stored in **SecureStore**
-- **Redux Toolkit** for global state + async thunks
+- **Redux Toolkit** stores
 - **Type-safe schemas** via **Zod**
-- **Axios + interceptors** with auto token refresh
 - **TailwindCSS (NativeWind)** styling
-- **Testing** with Jest, React Testing Library, MSW, and factory-based mocks
-- **Code quality** enforced via ESLint (flat config), Prettier, Husky, Commitlint, and lint-staged
+- **Testing** with Jest, React Testing Library
+- **Code quality** enforced via ESLint, Prettier, Husky, Commitlint, and lint-staged
 - **CI/CD** with GitHub Actions (type-check + tests + coverage)
-- **Mock Service Worker (MSW)** for both Node (tests) and Browser (Expo web preview)
-- **Ready-to-deploy** to Vercel (`vercel-build` for static web export)
+- **Ready-to-deploy** to Vercel (`export` for static web export)
 
 ---
 
@@ -27,26 +24,30 @@ A **modern Expo + React Native app** is TODO list manager that demonstrates clea
 
 ```
 blank/
-├── App.tsx              # Root navigation & state provider
-├── index.ts             # Entry, mock bootstrap support
+├── App.tsx                      # Navigation (tabs)
+├── index.ts                     # Entry
 ├── src/
-│   ├── screens/         # Home, Login, Favorites
-│   ├── services/        # Auth, Users, Todos, HTTP client
-│   ├── stores/          # Redux slices + stores
-│   ├── types/           # Zod schemas + TS types
-│   ├── components/      # Shared UI components
-│   └── mocks/           # MSW handlers, db, bootstrap
-├── tests/               # Jest tests, utils, factories
-│   ├── mocks/           # Test-specific mocks
-│   ├── stores.*.test.ts # Unit tests for Redux
-│   ├── screens.*.test.tsx
-│   └── utils/           # renderWithStore, helpers
-├── .github/workflows/ci.yml  # CI pipeline
-├── app.json             # Expo app config
-├── tsconfig.json        # TypeScript config
-├── jest.config.js       # Jest config
-├── eslint.config.js     # ESLint flat config
-└── tailwind.config.js   # TailwindCSS setup
+│   ├── screens/
+│   │   └── HomeScreen.tsx       # List + toggle todos
+│   ├── services/
+│   │   ├── http.ts              # Axios instance (https://dummyjson.com)
+│   │   └── todos.ts             # listTodos, toggleTodo
+│   ├── stores/
+│   │   ├── index.ts             # Redux store
+│   │   └── hooks.ts             # typed useDispatch/useSelector
+│   ├── types/
+│   │   └── todo.ts              # Zod schemas + types
+│   └── components/
+│       └── TabBarIcon.tsx
+├── tests/
+│   ├── screens.HomeScreen.test.tsx
+│   └── utils/renderWithStore.tsx
+├── app.json
+├── tsconfig.json
+├── jest.config.js
+├── jest.setup.js
+├── eslint.config.js
+└── tailwind.config.js
 ```
 
 ---
@@ -65,11 +66,11 @@ blank/
 
 **State Management:**
 
-- Redux Toolkit (auth, favs slices)
+- Redux Toolkit
 
 **APIs & Validation:**
 
-- Axios with interceptors
+- Axios
 - Zod schemas
 
 **UI:**
@@ -81,12 +82,11 @@ blank/
 
 - Jest + jest-expo
 - React Testing Library (RNTL)
-- MSW (node + browser)
 - Faker factories for data
 
 **Tooling:**
 
-- ESLint (flat, with TS, RN, Prettier)
+- ESLint
 - Prettier
 - Husky (pre-commit, pre-push, commit-msg)
 - Commitlint + Commitizen
@@ -121,12 +121,6 @@ npm run ios     # open iOS simulator
 npm run web     # run web preview
 ```
 
-Start with fake API mocks (MSW):
-
-```bash
-EXPO_PUBLIC_USE_FAKE=1 npm start
-```
-
 ---
 
 ## 🧪 Testing
@@ -153,7 +147,6 @@ Testing libraries:
 
 - `@testing-library/react-native` for UI
 - `jest-expo` for RN environment
-- `msw` for mocking API calls
 - `faker` factories for mock data
 
 ---
@@ -163,21 +156,10 @@ Testing libraries:
 For Vercel static web export:
 
 ```bash
-npm run vercel-build
+npm run export
 ```
 
 This generates a production-ready web build in `/dist` that can be deployed on Vercel or any static host.
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` or `.env.local` file:
-
-```env
-EXPO_PUBLIC_USE_FAKE=0   # 1 = enable MSW mock API
-NODE_ENV=development
-```
 
 ---
 

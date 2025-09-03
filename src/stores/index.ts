@@ -1,14 +1,9 @@
 // src\stores\index.ts
 
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import favsReducer from './slices/favsSlice';
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    favs: favsReducer,
-  },
+  reducer: {}, // placeholder; add future reducers here
 });
 
 export type RootState = ReturnType<typeof store.getState>;
