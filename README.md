@@ -75,7 +75,6 @@ blank/
 
 **UI:**
 
-- React Native Paper
 - Expo Vector Icons (Ionicons)
 
 **Testing:**

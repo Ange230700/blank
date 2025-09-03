@@ -1,9 +1,9 @@
 // tests/screens.HomeScreen.test.tsx
-
 import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { renderWithStore } from 'blank1/utils/renderWithStore';
 
+// Mock the todos service
 jest.mock('blank/services/todos', () => ({
   __esModule: true,
   listTodos: jest.fn(async () => ({
@@ -16,6 +16,9 @@ jest.mock('blank/services/todos', () => ({
     ],
   })),
   toggleTodo: jest.fn(async (_id: number, next: boolean) => ({
+    id: _id,
+    userId: 1,
+    todo: _id === 1 ? 'Write tests' : 'Ship app',
     completed: next,
   })),
 }));
@@ -29,25 +32,48 @@ describe('HomeScreen', () => {
   it('renders todos', async () => {
     renderWithStore(<HomeScreen />);
     await waitFor(() => expect(todosMock.listTodos).toHaveBeenCalled());
+
     expect(await screen.findByText('Write tests')).toBeTruthy();
     expect(await screen.findByText('Ship app')).toBeTruthy();
   });
 
-  it('toggles a todo using the switch', async () => {
+  it('toggles a todo using the switch (via testID)', async () => {
     renderWithStore(<HomeScreen />);
     await waitFor(() => expect(todosMock.listTodos).toHaveBeenCalled());
 
-    await screen.findByText('Write tests');
-    let switches = screen.getAllByRole('switch');
-    expect(switches[0]).toHaveProp('value', false);
+    const sw = await screen.findByTestId('todo-switch-1');
+    expect(sw).toHaveProp('value', false);
 
-    fireEvent(switches[0], 'valueChange', true);
+    fireEvent(sw, 'valueChange', true);
 
     await waitFor(() => {
-      switches = screen.getAllByRole('switch');
-      expect(switches[0]).toHaveProp('value', true);
+      expect(screen.getByTestId('todo-switch-1')).toHaveProp('value', true);
+    });
+    expect(todosMock.toggleTodo).toHaveBeenCalledWith(1, true);
+  });
+
+  it('filters with tabs using testIDs', async () => {
+    renderWithStore(<HomeScreen />);
+    await waitFor(() => expect(todosMock.listTodos).toHaveBeenCalled());
+
+    // Start at "all"
+    expect(await screen.findByText('Write tests')).toBeTruthy();
+    expect(await screen.findByText('Ship app')).toBeTruthy();
+
+    // Show completed
+    fireEvent.press(screen.getByTestId('filter-completed'));
+
+    // "Write tests" is pending → should disappear
+    await waitFor(() => {
+      expect(screen.queryByText('Write tests')).toBeNull();
+      expect(screen.getByText('Ship app')).toBeTruthy();
     });
 
-    expect(todosMock.toggleTodo).toHaveBeenCalledWith(1, true);
+    // Show pending
+    fireEvent.press(screen.getByTestId('filter-pending'));
+    await waitFor(() => {
+      expect(screen.getByText('Write tests')).toBeTruthy();
+      expect(screen.queryByText('Ship app')).toBeNull();
+    });
   });
 });
