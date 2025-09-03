@@ -66,7 +66,7 @@ export default function App() {
 
   useEffect(() => {
     hydrate();
-  }, []);
+  }, [hydrate]);
 
   let content: React.ReactNode;
   if (loading) {
