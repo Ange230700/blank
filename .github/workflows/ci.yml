@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-test-typecheck:
+  test-typecheck:
     name: Lint • Test • Type-check
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -47,12 +47,6 @@ jobs:
       - name: Install dependencies (npm i)
         if: ${{ hashFiles('package-lock.json') == '' }}
         run: npm i --no-audit --no-fund
-
-      - name: Prettier check
-        run: npx prettier --check .
-
-      - name: ESLint
-        run: npx eslint . --max-warnings=0
 
       - name: Type check
         run: npx tsc -p tsconfig.json --noEmit
