@@ -12,14 +12,14 @@ import {
 import { Buffer } from 'buffer';
 import type { NavigatorScreenParams } from '@react-navigation/native';
 
-import HomeScreen from 'blank/screens/HomeScreen';
-import FavoritesScreen from 'blank/screens/FavoritesScreen';
-import TabBarIcon from 'blank/components/TabBarIcon';
-import LoginScreen from 'blank/screens/LoginScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import FavoritesScreen from './src/screens/FavoritesScreen';
+import TabBarIcon from './src/components/TabBarIcon';
+import LoginScreen from './src/screens/LoginScreen';
 
-import { store } from 'blank/stores';
-import { useAppDispatch, useAppSelector } from 'blank/stores/hooks';
-import { hydrate } from 'blank/stores/slices/authSlice';
+import { store } from './src/stores';
+import { useAppDispatch, useAppSelector } from './src/stores/hooks';
+import { hydrate } from './src/stores/slices/authSlice';
 
 global.Buffer = Buffer;
 

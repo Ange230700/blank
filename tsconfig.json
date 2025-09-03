@@ -11,5 +11,5 @@
     "types": ["nativewind/types", "jest", "node"],
     "skipLibCheck": true
   },
-  "include": ["src", "tests", "jest.setup.ts", "tests/types", "expo-env.d.ts"]
+  "include": ["src", "tests", "jest.setup.ts", "tests/types"]
 }

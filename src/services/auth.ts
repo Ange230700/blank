@@ -1,6 +1,6 @@
 // src\services\auth.ts
 
-import http from './http';
+import http from 'blank/services/http';
 import * as SecureStore from 'expo-secure-store';
 import { LoginResponse, MeResponse } from 'blank/types/auth';
 

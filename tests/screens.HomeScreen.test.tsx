@@ -1,31 +1,16 @@
 // tests\screens.HomeScreen.test.tsx
 
 import React from 'react';
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-} from '@testing-library/react-native';
+import { screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { renderWithStore } from 'blank1/utils/renderWithStore';
 
-// ---- auth store mock (stable user + no-op hydrate)
-jest.mock('blank/stores/authStore', () => ({
-  __esModule: true,
-  useAuth: () => ({
-    user: { id: 1, username: 'emilys' },
-    loading: false,
-    error: undefined,
-    hydrate: jest.fn(),
-  }),
-}));
-
-// ---- favs store mock (no-op)
+// ---- favs store mock (keep or remove; not needed if using Redux slice)
 jest.mock('blank/stores/favsStore', () => ({
   __esModule: true,
   useFavs: () => ({ togglePin: jest.fn(), isPinned: () => false }),
 }));
 
-// ---- todos service mock (named exports only; no default)
+// ---- todos service mock
 jest.mock('blank/services/todos', () => ({
   __esModule: true,
   listTodosByUser: jest.fn(async () => ({
@@ -35,7 +20,7 @@ jest.mock('blank/services/todos', () => ({
     todos: [
       { id: 1, userId: 1, todo: 'Write tests', completed: false },
       { id: 2, userId: 1, todo: 'Ship app', completed: true },
-    ].map((t) => ({ ...t })), // fresh refs each call
+    ].map((t) => ({ ...t })),
   })),
   toggleTodo: jest.fn(async (_id: number, next: boolean) => ({
     completed: next,
@@ -43,45 +28,54 @@ jest.mock('blank/services/todos', () => ({
 }));
 
 import HomeScreen from 'blank/screens/HomeScreen';
-
-// Get handles to the mocked fns in a Jest-safe way
 const todosMock = jest.requireMock('blank/services/todos');
 
 jest.setTimeout(20000);
 afterEach(() => jest.clearAllMocks());
 
+const preloaded = {
+  auth: {
+    user: {
+      id: 1,
+      username: 'emilys',
+      email: 'e@x.com',
+      firstName: 'Emily',
+      lastName: 'Johnson',
+      gender: 'female',
+      image: 'https://dummyjson.com/icon/emilys/128',
+    },
+    loading: false,
+    error: undefined,
+  },
+  favs: { pinnedIds: {} },
+};
+
 describe('HomeScreen', () => {
   it('renders user todos', async () => {
-    render(<HomeScreen />);
+    renderWithStore(<HomeScreen />, { preloadedState: preloaded });
 
-    // Wait until the effect calls the service
     await waitFor(
       () => expect(todosMock.listTodosByUser).toHaveBeenCalledWith(1, 30, 0),
       { timeout: 10000 },
     );
 
-    // Then items should be present
     expect(await screen.findByText('Write tests')).toBeTruthy();
     expect(await screen.findByText('Ship app')).toBeTruthy();
   });
 
   it('toggles a todo using the switch', async () => {
-    render(<HomeScreen />);
+    renderWithStore(<HomeScreen />, { preloadedState: preloaded });
 
-    // Ensure data loaded
     await waitFor(() => expect(todosMock.listTodosByUser).toHaveBeenCalled(), {
       timeout: 10000,
     });
 
-    // First switch corresponds to "Write tests"
     await screen.findByText('Write tests');
     let switches = screen.getAllByRole('switch');
     expect(switches[0]).toHaveProp('value', false);
 
-    // Flip it
     fireEvent(switches[0], 'valueChange', true);
 
-    // UI should reflect the change
     await waitFor(() => {
       switches = screen.getAllByRole('switch');
       expect(switches[0]).toHaveProp('value', true);
