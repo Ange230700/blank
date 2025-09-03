@@ -26,6 +26,7 @@ export default [
       'eslint.config.*',
       'tests/mocks/emptyModule.js',
       'tests/mocks/reanimated.js',
+      'public',
     ],
   },
 

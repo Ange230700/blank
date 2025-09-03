@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "vercel-build": "npx expo export --platform web"
+  }
+}
