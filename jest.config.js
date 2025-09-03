@@ -5,6 +5,7 @@ export default {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    '^blank1/(.*)$': '<rootDir>/src/$1',
+    '^blank/(.*)$': '<rootDir>/src/$1',
+    '^blank1/(.*)$': '<rootDir>/tests/$1',
   },
 };
