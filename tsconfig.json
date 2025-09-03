@@ -9,5 +9,5 @@
     },
     "types": ["nativewind/types", "jest", "node"]
   },
-  "include": ["src", "tests", "jest.setup.ts", "tests/types"]
+  "include": ["src", "tests", "jest.setup.ts", "tests/types", "expo-env.d.ts"]
 }
