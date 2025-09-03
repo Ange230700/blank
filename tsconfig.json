@@ -7,6 +7,7 @@
     "paths": {
       "blank/*": ["./src/*", "./tests/*"]
     },
-    "types": ["nativewind/types", "jest"]
-  }
+    "types": ["nativewind/types", "jest", "node"]
+  },
+  "include": ["src", "tests", "jest.setup.ts", "tests/types"]
 }

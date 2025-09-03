@@ -2,6 +2,7 @@
   "name": "blank",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -12,9 +13,9 @@
     "commitlint": "commitlint --edit",
     "lint": "eslint --cache --fix",
     "clean": "rm -rf package-lock.json node_modules dist .expo",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --runInBand"
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watch --detectOpenHandles",
+    "test:ci": "jest --runInBand --detectOpenHandles"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
@@ -32,6 +33,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.6",
+    "react-native-gesture-handler": "~2.24.0",
     "react-native-paper": "^5.14.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -51,27 +53,26 @@
     "@types/jest": "^30.0.0",
     "@types/leaflet": "^1.9.20",
     "@types/react": "~19.0.10",
+    "@types/react-test-renderer": "^19.1.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "jest": "^30.1.2",
+    "jest-expo": "~53.0.0",
     "lint-staged": "^16.0.0",
     "prettier": "^3.6.2",
+    "react-test-renderer": "19.0.0",
     "typescript": "~5.8.3",
+    "typescript-eslint": "^8.41.0",
     "validate-branch-name": "^1.3.2"
   },
-  "private": true,
-  "jest": {
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.ts"
-    ],
-    "moduleNameMapper": {
-      "^blank/(.*)$": "<rootDir>/src/$1"
-    }
+  "overrides": {
+    "react-test-renderer": "19.0.0"
   },
+  "private": true,
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
     "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
