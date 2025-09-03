@@ -1,21 +1,25 @@
 // babel.config.js
-
 export default function (api) {
-  // cache based on NODE_ENV + whether we're in Jest
-  const isJest = !!process.env.JEST_WORKER_ID;
-  api.cache.using(
-    () => `${process.env.NODE_ENV ?? 'development'}|jest=${isJest}`,
-  );
+  api.cache.forever();
 
   return {
-    presets: ['babel-preset-expo'],
+    // NativeWind is a preset; keep it with Expo
+    presets: ['babel-preset-expo', 'nativewind/babel'],
 
-    // These plugins are great for the app, but can break Jest when it compiles
-    // react-native/jest/setup.js and other node_modules files.
-    // Only include them outside of Jest.
-    plugins: isJest ? [] : ['nativewind/babel', 'react-native-worklets/plugin'],
-
-    // (optional) If you prefer, you can also do:
-    // env: { test: { plugins: [] } }
+    // Apply Reanimated plugin only to your source files so Jest / node_modules aren't affected
+    overrides: [
+      {
+        test: [
+          './src/**/*',
+          './App.tsx',
+          './App.jsx',
+          './index.ts',
+          './index.tsx',
+          './index.js',
+        ],
+        // Reanimated plugin MUST be last (within this list)
+        plugins: ['react-native-reanimated/plugin'],
+      },
+    ],
   };
 }

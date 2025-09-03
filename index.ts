@@ -1,5 +1,6 @@
 // index.ts
 
+import 'react-native-reanimated';
 import { registerRootComponent } from 'expo';
 
 if (process.env.EXPO_PUBLIC_USE_FAKE === '1') {
