@@ -8,7 +8,6 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "vercel-build": "npx expo export --platform web",
     "prepare": "husky",
     "commit": "git-cz",
     "commitlint": "commitlint --edit",
@@ -16,7 +15,8 @@
     "clean": "rm -rf package-lock.json node_modules dist .expo",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch --detectOpenHandles",
-    "test:ci": "jest --runInBand --detectOpenHandles"
+    "test:ci": "jest --runInBand --detectOpenHandles",
+    "export": "expo export"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
