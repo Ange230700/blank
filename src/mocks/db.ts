@@ -1,8 +1,8 @@
 // src\mocks\db.ts
 
 import { faker } from '@faker-js/faker';
-import { makeUser, toPublic } from 'blank/mocks/factories/user';
-import { makeTodosPageByUser } from 'blank/mocks/factories/todo';
+import { makeUser, toPublic } from 'blank1/mocks/factories/user';
+import { makeTodosPageByUser } from 'blank1/mocks/factories/todo';
 import type { PublicUser } from 'blank/types/user';
 
 faker.seed(42);

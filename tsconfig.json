@@ -5,7 +5,8 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "blank/*": ["./src/*", "./tests/*"]
+      "blank/*": ["./src/*"],
+      "blank1/*": ["./tests/*"]
     },
     "types": ["nativewind/types", "jest", "node"],
     "skipLibCheck": true

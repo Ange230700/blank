@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react-native';
-import { renderWithStore } from 'blank/utils/renderWithStore';
+import { renderWithStore } from 'blank1/utils/renderWithStore';
 import * as authApi from 'blank/services/auth';
 
 jest.spyOn(authApi, 'login').mockResolvedValue({

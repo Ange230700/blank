@@ -3,7 +3,7 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react-native';
 import HomeScreen from 'blank/screens/HomeScreen';
-import { renderWithStore } from 'blank/utils/renderWithStore';
+import { renderWithStore } from 'blank1/utils/renderWithStore';
 
 test('renders todos from fake API', async () => {
   renderWithStore(<HomeScreen />);
