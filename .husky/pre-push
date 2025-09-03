@@ -8,7 +8,7 @@ case "$HUSKY_GIT_PARAMS" in
 esac
 
 echo "🔎 Running unit tests before push..."
-# npm run test:ci
+npm run test
 
 echo "🧹 Linting..."
 npm run lint
