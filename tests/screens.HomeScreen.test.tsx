@@ -3,10 +3,6 @@ import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { renderWithStore } from 'blank1/utils/renderWithStore';
 
-jest.mock('blank/ui/responsive', () => ({
-  useGridColumns: () => 1,
-}));
-
 // Mock the todos service
 jest.mock('blank/services/todos', () => ({
   __esModule: true,
@@ -25,6 +21,10 @@ jest.mock('blank/services/todos', () => ({
     todo: _id === 1 ? 'Write tests' : 'Ship app',
     completed: next,
   })),
+}));
+
+jest.mock('blank/ui/responsive', () => ({
+  useGridColumns: () => 1,
 }));
 
 import HomeScreen from 'blank/screens/HomeScreen';
