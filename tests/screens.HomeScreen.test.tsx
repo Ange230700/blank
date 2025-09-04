@@ -39,11 +39,12 @@ describe('HomeScreen', () => {
 
     expect(await screen.findByText('Write tests')).toBeTruthy();
     expect(await screen.findByText('Ship app')).toBeTruthy();
+    expect(todosMock.listTodos).toHaveBeenCalled();
   });
 
   it('toggles a todo using the switch (via testID)', async () => {
     renderWithStore(<HomeScreen />);
-    await waitFor(() => expect(todosMock.listTodos).toHaveBeenCalled());
+    await screen.findByText('Write tests');
 
     const sw = await screen.findByTestId('todo-switch-1');
     expect(sw).toHaveProp('value', false);
@@ -58,7 +59,7 @@ describe('HomeScreen', () => {
 
   it('filters with tabs using testIDs', async () => {
     renderWithStore(<HomeScreen />);
-    await waitFor(() => expect(todosMock.listTodos).toHaveBeenCalled());
+    await screen.findByText('Write tests');
 
     // Start at "all"
     expect(await screen.findByText('Write tests')).toBeTruthy();
