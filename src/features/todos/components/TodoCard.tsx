@@ -6,17 +6,13 @@ import type { Todo } from 'blank/types/todo';
 
 type Props = {
   item: Todo;
-  /** Toggle completed; if omitted, the checkbox is hidden (useful in Archive) */
   onToggle?: (t: Todo) => void;
-  /** Archive from Home */
   onArchive?: (t: Todo) => void;
-  /** Unarchive from Archive */
   onUnarchive?: (t: Todo) => void;
-  /** If true, renders as archived (e.g., show Unarchive action) */
   isArchived?: boolean;
 };
 
-export const CARD_HEIGHT = 96; // px, used by lists for layout math
+export const CARD_HEIGHT = 96;
 
 export function TodoCard({
   item,
@@ -93,7 +89,7 @@ export function TodoCard({
             <Ionicons
               name={checked ? 'checkbox' : 'square-outline'}
               size={22}
-              color={checked ? '#2563eb' : '#404040'} // blue-600 / neutral-700
+              color={checked ? '#2563eb' : '#404040'}
             />
             <Text className="text-neutral-700">
               {checked ? 'Done' : 'Todo'}

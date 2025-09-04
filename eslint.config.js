@@ -1,4 +1,4 @@
-// eslint.config.js (flat, ESM)
+// eslint.config.js
 
 import { FlatCompat } from '@eslint/eslintrc';
 import prettierConfig from 'eslint-config-prettier';
@@ -27,16 +27,15 @@ export default [
       'tests/mocks/emptyModule.js',
       'tests/mocks/reanimated.js',
       'public',
+      'coverage',
     ],
   },
 
   // React Native shareable config converted to flat
   ...compat.extends('@react-native/eslint-config'),
 
-  // Turn off rules that conflict with Prettier
   prettierConfig,
 
-  // Project tweaks (plugins must be present in the same block as their rules)
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -51,7 +50,7 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      // surface formatting problems (optional: change to "error")
+      // surface formatting problems
       'prettier/prettier': 'warn',
 
       // prefer TS version; disable base rule

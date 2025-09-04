@@ -40,7 +40,6 @@ jobs:
       - name: Validate branch name
         run: npx --yes validate-branch-name
 
-      # Prefer reproducible installs; fall back if lockfile isn't present
       - name: Install dependencies (npm ci)
         if: ${{ hashFiles('package-lock.json') != '' }}
         run: npm ci --no-audit --no-fund

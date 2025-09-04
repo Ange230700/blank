@@ -23,9 +23,9 @@ export function StatsPills({ total, completed, pending }: Readonly<Props>) {
       data={data}
       keyExtractor={(i) => i.key}
       numColumns={3}
-      scrollEnabled={false} // it's just a header block
+      scrollEnabled={false}
       contentContainerStyle={styles.content}
-      columnWrapperStyle={styles.row} // spacing between columns
+      columnWrapperStyle={styles.row}
       renderItem={({ item }) => (
         <View style={styles.col}>
           <View style={styles.pill}>
@@ -42,20 +42,16 @@ export function StatsPills({ total, completed, pending }: Readonly<Props>) {
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 4,
-    marginBottom: 12, // matches your spacing rhythm
+    marginBottom: 12,
   },
-  // Each cell fills 1/3 of the row
+
   col: {
     flex: 1,
     marginBottom: 8,
   },
-  // NOTE: RN 0.79 supports gap/columnGap in many cases, but to be safe:
+
   row: {
-    // Prefer gap if available in your target; otherwise use space-between + inner padding
-    // @ts-ignore: gap is not typed in RN yet
     gap: 8,
-    // fallback if gap isn't supported on some platforms:
-    // justifyContent: 'space-between',
   },
   pill: {
     borderRadius: 9999,

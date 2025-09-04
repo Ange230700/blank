@@ -61,14 +61,12 @@ describe('HomeScreen', () => {
     renderWithStore(<HomeScreen />);
     await screen.findByText('Write tests');
 
-    // Start at "all"
     expect(await screen.findByText('Write tests')).toBeTruthy();
     expect(await screen.findByText('Ship app')).toBeTruthy();
 
     // Show completed
     fireEvent.press(screen.getByTestId('filter-completed'));
 
-    // "Write tests" is pending → should disappear
     await waitFor(() => {
       expect(screen.queryByText('Write tests')).toBeNull();
       expect(screen.getByText('Ship app')).toBeTruthy();

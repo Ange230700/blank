@@ -80,7 +80,6 @@ export default function HomeScreen() {
           animated: true,
         });
       } else {
-        // Use the same gap as the grid uses
         const row = Math.floor(info.index / cols);
         const approx = HEADER_HEIGHT + row * (CARD_HEIGHT + GRID_GAP);
         listRef.current?.scrollToOffset({ offset: approx, animated: true });
@@ -132,13 +131,11 @@ export default function HomeScreen() {
         ) : (
           <FlatList
             ref={listRef}
-            style={containerStyles.center} // clamp width
+            style={containerStyles.center}
             contentContainerStyle={listStyles.content}
             data={shown}
             keyExtractor={(i) => String(i.id)}
-            // 🔑 responsive grid
             numColumns={cols}
-            // spacing between rows
             columnWrapperStyle={cols > 1 ? styles.columnWrapper : undefined}
             ListHeaderComponent={headerEl}
             stickyHeaderIndices={[0]}
@@ -175,13 +172,10 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   columnWrapper: {
-    // Horizontal gap between items in the same row (grid)
-    // RN 0.79 supports `gap`/`columnGap`, but using margin keeps it universal
-    // @ts-ignore allow gap if supported
     columnGap: GRID_GAP,
   },
   cell: {
     flex: 1,
-    marginBottom: GRID_GAP, // vertical spacing between rows
+    marginBottom: GRID_GAP,
   },
 });

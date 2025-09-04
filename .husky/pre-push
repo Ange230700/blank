@@ -1,4 +1,4 @@
-# nihil_frontend\.husky\pre-push
+# .husky\pre-push
 
 set -e
 

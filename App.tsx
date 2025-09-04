@@ -65,7 +65,6 @@ function AppInner() {
         <Stack.Screen name="Root" component={Tabs} />
       </Stack.Navigator>
 
-      {/* Status bar contrasts with theme on native; no-op on web */}
       <StatusBar style="light" />
     </NavigationContainer>
   );

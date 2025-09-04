@@ -16,8 +16,8 @@ type Props = {
 };
 
 const FILTERS: readonly TodoFilter[] = ['all', 'completed', 'pending'] as const;
-const CONTAINER_H = 48; // matches sticky header height
-const TAB_H = 40; // container (48) - vertical padding (4+4)
+const CONTAINER_H = 48;
+const TAB_H = 40;
 
 export function FilterTabs({ value, onChange }: Readonly<Props>) {
   const data = useMemo(() => FILTERS.slice(), []);
@@ -63,19 +63,17 @@ const styles = StyleSheet.create({
   container: {
     height: CONTAINER_H,
     borderRadius: 12,
-    backgroundColor: '#f5f5f5', // neutral-100
+    backgroundColor: '#f5f5f5',
   },
   content: {
-    padding: 4, // p-1
+    padding: 4,
   },
   row: {
-    // RN may not have typed 'gap' yet; fallback is handled by col padding.
-    // @ts-ignore
     gap: 8,
   },
   col: {
     flex: 1,
-    paddingHorizontal: 4, // pairs with row gap fallback
+    paddingHorizontal: 4,
   },
   tab: {
     height: TAB_H,
@@ -88,10 +86,10 @@ const styles = StyleSheet.create({
   },
   tabText: {
     textTransform: 'capitalize',
-    color: '#404040', // neutral-700
+    color: '#404040',
   },
   tabTextSelected: {
-    color: '#2563eb', // blue-600
+    color: '#2563eb',
     fontWeight: '700',
   },
 });

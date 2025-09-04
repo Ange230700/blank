@@ -40,7 +40,7 @@ export function useTodos() {
     try {
       await toggleTodo(t.id, !t.completed);
     } catch {
-      /* no-op optimistic */
+      /* no-op */
     }
   }, []);
 
