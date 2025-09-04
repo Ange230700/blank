@@ -1,12 +1,6 @@
 // App.tsx
 import 'react-native-gesture-handler';
-import { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
-import {
-  NavigationContainer,
-  DarkTheme,
-  DefaultTheme,
-} from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider } from 'react-redux';
@@ -62,28 +56,26 @@ function Tabs() {
   );
 }
 
+function AppInner() {
+  const navTheme = DefaultTheme;
+
+  return (
+    <NavigationContainer theme={navTheme}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Root" component={Tabs} />
+      </Stack.Navigator>
+
+      {/* Status bar contrasts with theme on native; no-op on web */}
+      <StatusBar style="light" />
+    </NavigationContainer>
+  );
+}
+
 export default function App() {
-  const scheme = useColorScheme();
-  const navTheme = scheme === 'dark' ? DarkTheme : DefaultTheme;
-
-  // Web: keep NativeWind in sync by toggling .dark on <html>
-  useEffect(() => {
-    if (Platform.OS === 'web' && typeof document !== 'undefined') {
-      document.documentElement.classList.toggle('dark', scheme === 'dark');
-    }
-  }, [scheme]);
-
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <NavigationContainer theme={navTheme}>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Root" component={Tabs} />
-          </Stack.Navigator>
-
-          {/* Status bar contrasts with theme on native; no-op on web */}
-          <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-        </NavigationContainer>
+        <AppInner />
       </SafeAreaProvider>
     </Provider>
   );
